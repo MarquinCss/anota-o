@@ -1,0 +1,74 @@
+Quando trabalhamos com banco de dados podeos relacionar as tabelas e os dados que existem dentro delas. estabelecer essas ligações contribui para estruturar melhor o nosso banco de dados e a concatenar dados entre eles.
+
+> os responsáveis por estabelecer e representar as relaçoes entre dados e tabelas no modelo entidade relacionamento.
+
+Chave primária ou Primary key = identificador de um dado único, por exemplo o CPF é uma chave primária.;
+
+Chave estrangeira (foreign Key) = é a chave primaria de uma tabela que foi copiada e enviada a outra tabela com o intuito de estabelecer e indicar uma relação entre os dados delas (estrangeiro, tipo vem de fora de outra tabela, era a primary de outra tabela e aqui na outra que usamos para "relacionar" ela é estrangeira.);
+
+costumamos definir a chave primária de uma tabela sempre que a criamos. Neste momento escolhemos também a sua engine, que é o tipo de máquina que criará a tabela. (engine = "maquina") 
+
+neste exemplo, definimos a innodb como a nossa engine, porém exitem outras como a MyISAM e a XtraBD. A maior semelhança entre elas é que todas são compatíveis com chaves estrangeiras.
+
+innodb se encaixa mais nessas especificações{
+DICA = durabilidade;
+isolamento;
+consistencia;
+Atomicidade.
+}
+
+Cardinalidade
+é o número possível de relacionamento entre duas tabelas. Trabalhamos principalmente com 3 tipo:
+1-1 = um pra muitos;
+1-n =
+1-...... (faltou)
+
+
+no exemplo cada aluno pode contratar 1 plano, cada plano pode ser contratado por N alunos.
+
+
+Relacionar tabelas
+exemplo: falar que essa tabela vai ser preenchida com a chave primária de outra tabela.
+aqui: 
+use academia_ios;
+show tables;
+describe alunos;
+describe periodos;
+describe personal;
+describe planos;
+select * from alunos;
+select * from periodos;
+select * from personal;
+select * from planos;
+#select = mostrar dados da tabela (curiosidade)
+alter table alunos add plano int;
+#alterando a tabela alunos adicionando uma chave estrangeira -->
+alter table alunos add foreign key (plano) references planos (codigo_plano);
+# -  - - -   -  - - adicionar chave estrangeira plano referenciando da tabela plano código planos.
+
+delete from planos where codigo_plano = '4';
+#deletar da tabela planos a linha aonde o código plano for igual a 'N'
+
+#Dar Join (misturar tabelas
+
+SELECT 
+    alunos.aluno, planos.plano, planos.valor # colunas que vão aparecer
+FROM #tabela inicial
+    alunos
+        JOIN #misturar as infos
+    planos ON planos.codigo_plano = alunos.plano order by alunos.aluno; #order opcional
+#da tabela alunos eu quero mostrar o aluno, da tabela planos quero mostrar a cluna planos
+# de alunos misturar com planos mostrando código_plano recebe alunos plano 
+
+#usando tabelas apelidadas
+SELECT 
+    a.aluno, p.plano, p.valor
+FROM
+    alunos AS a
+        JOIN
+    planos AS p ON p.codigo_plano = a.plano
+ORDER BY aluno;
+
+
+ver qual tabela tem relação com quais tabelas
+database > reverse enginner
